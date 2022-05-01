@@ -127,8 +127,16 @@
 			let score = 0;
 
 			coin.addEventListener('click', (e) => {
-				score ++;
+				score++;
 				scoreTextElem.innerHTML = score.toString();
+
+				coin.style.width = '230px';
+				coin.style.height = '230px';
+
+				setTimeout(() => {
+					coin.style.width = '215px';
+					coin.style.height = '215px';
+				}, 45);
 			});
 		</script>
 	</body>
