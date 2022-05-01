@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>Canvas Game</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			body {
+				width: 100vw;
+				height: 100vh;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+
+				background: linear-gradient(to right, red, purple);
+
+				color: white;
+				font-size: 50px;
+				font-family: 'Roboto';
+				user-select: none;
+			}
+
+			.screen {
+				border-radius: 10px;
+				border: 2px solid white;
+			}
+		</style>
+	</head>
+
+	<body>
+		Click the Coin!
+
+		<canvas class="screen"></canvas>
+		<script>
+			const canvas = document.querySelector('.screen');
+			let score = 0;
+			const FPS = 45;
+
+			canvas.height = (window.innerHeight / 100) * 75;
+			canvas.width = (window.innerWidth / 100) * 75;
+
+			const ctx = canvas.getContext('2d');
+
+			const coinRadius = 125;
+
+			canvas.addEventListener('click', (e) => {
+				const mousePos = {
+					x: e.clientX - (window.innerWidth - canvas.width) / 2,
+					y:
+						e.clientY -
+						(window.innerHeight - canvas.height) / 2 -
+						30,
+
+					distanceToCentre: Math.sqrt(
+						(e.clientX -
+							(window.innerWidth - canvas.width) / 2 -
+							canvas.width / 2) *
+							(e.clientX -
+								(window.innerWidth - canvas.width) / 2 -
+								canvas.width / 2) +
+							(e.clientY -
+								(window.innerHeight - canvas.height) / 2 -
+								30 -
+								canvas.height / 2) *
+								(e.clientY -
+									(window.innerHeight - canvas.height) / 2 -
+									30 -
+									canvas.height / 2)
+					)
+				};
+
+				if (mousePos.distanceToCentre < coinRadius) {
+					score++;
+				}
+			});
+
+			setInterval(() => {
+				ctx.fillStyle = 'rgb(36, 36, 36)';
+				ctx.textAlign = 'center';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				ctx.beginPath();
+				ctx.fillStyle = 'yellow';
+				ctx.arc(
+					canvas.width / 2,
+					canvas.height / 2,
+					coinRadius,
+					0,
+					2 * Math.PI
+				);
+				ctx.fill();
+
+				ctx.beginPath();
+				ctx.lineWidth = 5;
+				ctx.strokeStyle = 'orange';
+				ctx.arc(
+					canvas.width / 2,
+					canvas.height / 2,
+					coinRadius,
+					0,
+					2 * Math.PI
+				);
+				ctx.stroke();
+
+				ctx.fillStyle = 'black';
+				ctx.font = '90px Roboto';
+				ctx.fillText('$', canvas.width / 2, canvas.height / 2 + 33);
+
+				ctx.strokeStyle = 'white';
+
+				ctx.beginPath();
+				ctx.moveTo(0, 100);
+				ctx.lineTo(canvas.width, 100);
+				ctx.stroke();
+
+				ctx.fillStyle = 'white';
+				ctx.font = '75px Roboto';
+				ctx.fillText(`Score: ${score}`, canvas.width / 2, 75);
+
+				ctx.moveTo(0, 100);
+			}, Math.round(1000 / FPS));
+		</script>
+	</body>
+</html>
