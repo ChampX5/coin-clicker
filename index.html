@@ -15,129 +15,109 @@
 			rel="stylesheet"
 		/>
 
-		<style>
-			* {
-				padding: 0;
-				margin: 0;
-			}
-
-			body {
-				width: 100vw;
-				height: 100vh;
-
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-
-				background: linear-gradient(to right, red, purple);
-
-				color: white;
-				font-size: 50px;
-				font-family: 'Roboto';
-				user-select: none;
-			}
-
-			/* .screen {
-				border-radius: 10px;
-				border: 2px solid white;
-			} */
-
-			.screen {
-				width: 75%;
-				height: 75%;
-
-				background-color: rgba(0, 0, 0, 0.5);
-				border-radius: 10px;
-			}
-
-			.hud {
-				border-bottom: 2px solid white;
-				width: 100%;
-				height: 10%;
-
-				font-size: 30px;
-
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.score {
-				font-weight: bolder;
-				margin-left: 10px;
-			}
-
-			.canvas {
-				display: flex;
-				height: 90%;
-
-				align-items: center;
-				justify-content: center;
-			}
-
-			.coin {
-				background-color: yellow;
-				color: orangered;
-
-				font-size: 65px;
-
-				border: 5px solid orange;
-
-				width: 195px;
-				height: 195px;
-
-				display: flex;
-				align-items: center;
-				justify-content: center;
-
-				transition: all 150ms ease-out;
-
-				border-radius: 50%;
-			}
-
-			.coin:hover {
-				width: 215px;
-				height: 215px;
-
-				font-size: 80px;
-				color: red;
-				border: 5px solid orangered;
-			}
-		</style>
+		<link rel="stylesheet" href="./style.css">
 	</head>
 
 	<body>
 		Click the Coin!
 
 		<div class="screen">
-			<div class="hud">
-				Score:<span class="score">0</span>
-			</div>
+			<div class="hud">Score:<span class="score">0</span></div>
 			<div class="canvas">
 				<div class="coin">$</div>
 			</div>
 		</div>
 
+		<script src="./script.js"></script>
+		<!-- <canvas class="screen"></canvas>
 		<script>
-			const coin = document.querySelector('.coin');
-			const scoreTextElem = document.querySelector('.score');
+			const canvas = document.querySelector('.screen');
+			let score = 0;
 			const FPS = 45;
 
-			let score = 0;
+			canvas.height = (window.innerHeight / 100) * 75;
+			canvas.width = (window.innerWidth / 100) * 75;
 
-			coin.addEventListener('click', (e) => {
-				score++;
-				scoreTextElem.innerHTML = score.toString();
+			const ctx = canvas.getContext('2d');
 
-				coin.style.width = '230px';
-				coin.style.height = '230px';
+			const coinRadius = 125;
 
-				setTimeout(() => {
-					coin.style.width = '215px';
-					coin.style.height = '215px';
-				}, 45);
+			canvas.addEventListener('click', (e) => {
+				const mousePos = {
+					x: e.clientX - (window.innerWidth - canvas.width) / 2,
+					y:
+						e.clientY -
+						(window.innerHeight - canvas.height) / 2 -
+						30,
+
+					distanceToCentre: Math.sqrt(
+						(e.clientX -
+							(window.innerWidth - canvas.width) / 2 -
+							canvas.width / 2) *
+							(e.clientX -
+								(window.innerWidth - canvas.width) / 2 -
+								canvas.width / 2) +
+							(e.clientY -
+								(window.innerHeight - canvas.height) / 2 -
+								30 -
+								canvas.height / 2) *
+								(e.clientY -
+									(window.innerHeight - canvas.height) / 2 -
+									30 -
+									canvas.height / 2)
+					)
+				};
+
+				if (mousePos.distanceToCentre < coinRadius) {
+					score++;
+				}
 			});
-		</script>
+
+			setInterval(() => {
+				ctx.fillStyle = 'rgb(36, 36, 36)';
+				ctx.textAlign = 'center';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				ctx.beginPath();
+				ctx.fillStyle = 'yellow';
+				ctx.arc(
+					canvas.width / 2,
+					canvas.height / 2,
+					coinRadius,
+					0,
+					2 * Math.PI
+				);
+				ctx.fill();
+
+				ctx.beginPath();
+				ctx.lineWidth = 5;
+				ctx.strokeStyle = 'orange';
+				ctx.arc(
+					canvas.width / 2,
+					canvas.height / 2,
+					coinRadius,
+					0,
+					2 * Math.PI
+				);
+				ctx.stroke();
+
+				ctx.fillStyle = 'black';
+				ctx.font = '90px Roboto';
+				ctx.fillText('$', canvas.width / 2, canvas.height / 2 + 33);
+
+				ctx.strokeStyle = 'white';
+
+				ctx.beginPath();
+				ctx.moveTo(0, 100);
+				ctx.lineTo(canvas.width, 100);
+				ctx.stroke();
+
+				ctx.fillStyle = 'white';
+				ctx.font = '75px Roboto';
+				ctx.fillText(`Score: ${score}`, canvas.width / 2, 75);
+
+				ctx.moveTo(0, 100);
+			}, Math.round(1000 / FPS));
+		</script> -->
 	</body>
 </html>
